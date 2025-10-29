@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 08:02:15 by texenber          #+#    #+#             */
-/*   Updated: 2025/10/27 13:26:04 by texenber         ###   ########.fr       */
+/*   Updated: 2025/10/28 10:44:13 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_pipex
 	char	*cmd2_path;
 	int		fd_in;
 	int		fd_out;
+	int		pipe_fd[2];
 	
 }	t_pipex;
 

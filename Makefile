@@ -6,7 +6,7 @@
 #    By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/23 08:02:12 by texenber          #+#    #+#              #
-#    Updated: 2025/10/23 08:30:51 by texenber         ###   ########.fr        #
+#    Updated: 2025/10/28 09:25:02 by texenber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ PRINTF_DIR := include/ft_printf
 PRINTF_LIB := $(PRINTF_DIR)/libftprintf.a
 
 CC := cc
-CFLAGS := -Wall -Werror -Wextra
+CFLAGS := -g -Wall -Werror -Wextra
 CFLAGS += -I$(LIBFT_DIR) -I$(PRINTF_DIR)
 
 #utensils
