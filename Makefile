@@ -6,7 +6,7 @@
 #    By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/23 08:02:12 by texenber          #+#    #+#              #
-#    Updated: 2025/10/28 09:25:02 by texenber         ###   ########.fr        #
+#    Updated: 2025/11/03 11:25:06 by texenber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ NAME := pipex
 SRC_DIR := src
 OBJ_DIR := obj
 SRCS :=	\
-	pipex.c
+	pipex.c \
+	exit.c
 SRCS := $(SRCS:%=$(SRC_DIR)/%)
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
