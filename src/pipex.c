@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 08:02:18 by texenber          #+#    #+#             */
-/*   Updated: 2025/11/03 13:39:03 by texenber         ###   ########.fr       */
+/*   Updated: 2025/11/05 14:58:35 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,9 @@ void	execute_pipex(t_pipex *data, char ** envp)
 	{
 		dup2(data->fd_in, STDIN_FILENO);
 		dup2(data->pipe_fd[1], STDOUT_FILENO);
-		close(data->pipe_fd[0]);
-		close(data->pipe_fd[1]);
-		close(data->fd_in);
-		close(data->fd_out);
+		close_all(data);
 		execve(data->cmd1_path, data->cmd1_av, envp);
-		exit_all_error(data, "execve failed", 127);
+		// exit_all_error(data, "execve failed", 127);
 	}
 	pid2 = fork();
 	if (pid2 < 0)
@@ -46,19 +43,13 @@ void	execute_pipex(t_pipex *data, char ** envp)
 	{
 		dup2(data->pipe_fd[0], STDIN_FILENO);
 		dup2(data->fd_out, STDOUT_FILENO);
-		close(data->pipe_fd[0]);
-		close(data->pipe_fd[1]);
-		close(data->fd_in);
-		close(data->fd_out);
+		close_all(data);
 		execve(data->cmd2_path, data->cmd2_av, envp);
-		exit_all_error(data, "execve failed", 127);
+		// exit_all_error(data, "execve failed", 127);
 	}
-	close(data->pipe_fd[0]);
-	close(data->pipe_fd[1]);
-	close(data->fd_in);
-	close(data->fd_out);
 	waitpid(pid1, NULL, 0);
 	waitpid(pid2, NULL, 0);
+	// need to add the macro 
 }
 
 char **get_cmd_argv(char *av)
@@ -81,13 +72,11 @@ char	*resolve_cmd(char *cmd, char **dir_path)
 
 	i = -1;
 	result = NULL;
+	if (ft_strlen(cmd) == 0)
+		return (ft_strdup(" "));
 	if (ft_strchr(cmd, '/'))
-	{
 		if(access(cmd, X_OK) == 0)
 			return (ft_strdup(cmd));
-		else	
-			return (NULL);
-	}
 	while (dir_path[++i])
 	{
 		tmp = ft_strjoin(dir_path[i], "/");
@@ -99,7 +88,7 @@ char	*resolve_cmd(char *cmd, char **dir_path)
 			return (result);
 		free (result);
 	}
-	return (NULL);
+	return (ft_strdup(cmd));
 }
 
 void	find_cmd_path(t_pipex *data, char **envp)
@@ -120,26 +109,14 @@ void	find_cmd_path(t_pipex *data, char **envp)
 		i++;
 	}
 	if (!env_path)
-	{
 		exit_all_error(data, "PATH not found", 1); // might have to change this because it outputs success
-	}
 	dir_path = ft_split(env_path, ':');
 	if (!dir_path)
-	{
 		exit_all_error(data, "failed to split PATH", 1); // might have to change this because it outputs success
-	}
 	data->cmd1_path = resolve_cmd(data->cmd1_av[0], dir_path);
-	if (!data->cmd1_path)
-	{
-		free_argv(dir_path);
-		exit_all_error(data, "Command not found", 127);
-	}
 	data->cmd2_path = resolve_cmd(data->cmd2_av[0], dir_path);
-	if (!data->cmd2_path)
-	{
-		free_argv(dir_path);
-		exit_all_error(data, "Command not found", 127);
-	}
+	if (!data->cmd1_path || !data->cmd2_path)
+		exit_all_error(data, "cmd path", 1); // might have to change this because it outputs success
 	free_argv(dir_path);
 }
 
@@ -182,3 +159,14 @@ int	main(int ac, char **av, char **envp)
 	free_all(&data);
 	return 0;
 }
+// execve(data->cmd1_path, data->cmd1_av, envp);
+// if (access(data->cmd1_path, F_OK) != 0)
+//     exit_all_error(data, data->cmd1_av[0], 127); // file doesn't exist
+// else if (access(data->cmd1_path, X_OK) != 0)
+//     exit_all_error(data, data->cmd1_av[0], 126); // not executable
+// else 
+// 	exit_all_error(data, NULL, 1);
+// waitpid(pid2, &status1, 0);
+// waitpid(pid2, &status2, 0);        // capture the second child's exit status
+// if (WIFEXITED(status))            // check if it exited normally
+//     exit(WEXITSTATUS(status));

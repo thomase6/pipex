@@ -1,4 +1,5 @@
-hello how are you
-I am doing great
-what is the date
-today is the 28th of october
+hello
+how are you?
+I'm fine
+what about you?
+great.

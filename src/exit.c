@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 10:21:17 by texenber          #+#    #+#             */
-/*   Updated: 2025/11/03 11:24:36 by texenber         ###   ########.fr       */
+/*   Updated: 2025/11/05 13:07:53 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,17 @@ void free_argv(char **av)
 		i++;
 	}
 	free (av);
+}
+void	close_all(t_pipex *data)
+{
+	if (data->pipe_fd[0] >= 0)
+		close(data->pipe_fd[0]);
+	if (data->pipe_fd[1] >= 0)
+		close(data->pipe_fd[1]);
+	if (data->fd_in)
+		close(data->fd_in);
+	if (data->fd_out)
+		close(data->fd_out);
 }
 
 void	free_all(t_pipex *data)
@@ -55,8 +66,3 @@ void	exit_all_error(t_pipex *data, const char *msg, int exit_code)
 	exit(exit_code);
 }
 
-void	perror_exit(const char *err_msg, int exit_code)
-{
-	perror(err_msg);
-	exit(exit_code);
-}
