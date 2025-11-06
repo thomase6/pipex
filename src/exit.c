@@ -6,11 +6,16 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 10:21:17 by texenber          #+#    #+#             */
-/*   Updated: 2025/11/05 13:07:53 by texenber         ###   ########.fr       */
+/*   Updated: 2025/11/06 13:53:18 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "pipex.h"
+
+void ft_perror(char *msg)
+{
+	ft_putendl_fd(msg, STDERR_FILENO);
+}
 
 void free_argv(char **av)
 {
@@ -58,11 +63,12 @@ void	free_all(t_pipex *data)
 	
 }
 
-void	exit_all_error(t_pipex *data, const char *msg, int exit_code)
+void	exit_all_error(t_pipex *data, char *msg, int exit_code)
 {
 	if (msg)
-		perror(msg);
+		ft_perror(msg);// make my own perror with substr_fd
 	free_all(data);
 	exit(exit_code);
 }
+
 
