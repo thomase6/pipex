@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 15:49:54 by texenber          #+#    #+#             */
-/*   Updated: 2025/11/07 11:47:40 by texenber         ###   ########.fr       */
+/*   Updated: 2025/11/07 16:36:02 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	find_cmd_path(t_pipex *data, char **envp)
 		i++;
 	}
 	if (!env_path)
-		exit_all_error(data, "PATH not found", 1);
+		exit_all_error(data, "No such file or directory", 127);
 	dir_path = ft_split(env_path, ':');
 	if (!dir_path)
 		exit_all_error(data, "failed to allocate dir_path", 1);
