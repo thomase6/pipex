@@ -6,16 +6,16 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 08:02:18 by texenber          #+#    #+#             */
-/*   Updated: 2025/11/06 15:55:02 by texenber         ###   ########.fr       */
+/*   Updated: 2025/11/07 11:57:18 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char **get_cmd_argv(char *av)
+static char	**get_cmd_argv(char *av)
 {
-	char **new_cmd;
-	
+	char	**new_cmd;
+
 	if (!av)
 		return (NULL);
 	new_cmd = ft_split(av, ' ');
@@ -24,8 +24,8 @@ char **get_cmd_argv(char *av)
 	return (new_cmd);
 }
 
-int	init_pipex(t_pipex *data, char **av)
-{	
+static int	init_pipex(t_pipex *data, char **av)
+{
 	data->cmd1_path = NULL;
 	data->cmd2_path = NULL;
 	data->fd_in = -1;
@@ -38,21 +38,23 @@ int	init_pipex(t_pipex *data, char **av)
 	data->cmd2_av = NULL;
 	data->cmd1_av = get_cmd_argv(av[2]);
 	if (!data->cmd1_av)
-		exit_all_error(data, "Failed to allocate", 1);
+		exit_all_error(data, "Failed to allocate cmd1_av", 1);
 	data->cmd2_av = get_cmd_argv(av[3]);
 	if (!data->cmd2_av)
-		exit_all_error(data, "Failed to allocate", 1);
+		exit_all_error(data, "Failed to allocate cmd2_av", 1);
 	return (0);
 }
 
 int	main(int ac, char **av, char **envp)
 {
 	t_pipex	data;
-	
+
 	if (ac == 5)
 	{
 		init_pipex(&data, av);
 		find_cmd_path(&data, envp);
+		if (pipe(data.pipe_fd) == -1)
+			exit_all_error(&data, "Pipe failed", 1);
 		execute_pipex(&data, envp);
 	}
 	else
@@ -61,5 +63,5 @@ int	main(int ac, char **av, char **envp)
 		return (1);
 	}
 	free_all(&data);
-	return 0;
+	return (0);
 }

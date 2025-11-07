@@ -6,21 +6,21 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 10:21:17 by texenber          #+#    #+#             */
-/*   Updated: 2025/11/06 13:53:18 by texenber         ###   ########.fr       */
+/*   Updated: 2025/11/07 11:49:30 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "pipex.h"
+#include "pipex.h"
 
-void ft_perror(char *msg)
+void	ft_perror(char *msg)
 {
 	ft_putendl_fd(msg, STDERR_FILENO);
 }
 
-void free_argv(char **av)
+void	free_argv(char **av)
 {
 	int	i;
-	
+
 	i = 0;
 	while (av[i])
 	{
@@ -29,6 +29,7 @@ void free_argv(char **av)
 	}
 	free (av);
 }
+
 void	close_all(t_pipex *data)
 {
 	if (data->pipe_fd[0] >= 0)
@@ -59,16 +60,12 @@ void	free_all(t_pipex *data)
 		close(data->pipe_fd[0]);
 	if (data->pipe_fd[1] >= 0)
 		close(data->pipe_fd[1]);
-	
-	
 }
 
 void	exit_all_error(t_pipex *data, char *msg, int exit_code)
 {
 	if (msg)
-		ft_perror(msg);// make my own perror with substr_fd
+		ft_perror(msg);
 	free_all(data);
 	exit(exit_code);
 }
-
-

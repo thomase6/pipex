@@ -6,13 +6,13 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 15:49:54 by texenber          #+#    #+#             */
-/*   Updated: 2025/11/06 15:54:16 by texenber         ###   ########.fr       */
+/*   Updated: 2025/11/07 11:47:40 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*resolve_cmd(char *cmd, char **dir_path)
+static char	*resolve_cmd(char *cmd, char **dir_path)
 {
 	int		i;
 	char	*tmp;
@@ -23,15 +23,15 @@ char	*resolve_cmd(char *cmd, char **dir_path)
 	if (ft_strlen(cmd) == 0)
 		return (ft_strdup(" "));
 	if (ft_strchr(cmd, '/'))
-		if(access(cmd, X_OK) == 0)
+		if (access(cmd, X_OK) == 0)
 			return (ft_strdup(cmd));
 	while (dir_path[++i])
 	{
 		tmp = ft_strjoin(dir_path[i], "/");
 		result = ft_strjoin(tmp, cmd);
 		free(tmp);
-		if(!result)
-			return(NULL);
+		if (!result)
+			return (NULL);
 		if (access(result, X_OK) == 0)
 			return (result);
 		free (result);
@@ -52,18 +52,18 @@ void	find_cmd_path(t_pipex *data, char **envp)
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
 			env_path = envp[i] + 5;
-			break;
+			break ;
 		}
 		i++;
 	}
 	if (!env_path)
-		exit_all_error(data, "PATH not found", 1); // might have to change this because it outputs success
+		exit_all_error(data, "PATH not found", 1);
 	dir_path = ft_split(env_path, ':');
 	if (!dir_path)
-		exit_all_error(data, "failed to split PATH", 1); // might have to change this because it outputs success
+		exit_all_error(data, "failed to allocate dir_path", 1);
 	data->cmd1_path = resolve_cmd(data->cmd1_av[0], dir_path);
 	data->cmd2_path = resolve_cmd(data->cmd2_av[0], dir_path);
 	if (!data->cmd1_path || !data->cmd2_path)
-		exit_all_error(data, "cmd path", 1); // might have to change this because it outputs success
+		exit_all_error(data, "failed to allocate cmd_path", 1);
 	free_argv(dir_path);
 }
