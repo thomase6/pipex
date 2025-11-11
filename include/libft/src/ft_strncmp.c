@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: texenber <texenber@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:34:37 by texenber          #+#    #+#             */
-/*   Updated: 2025/05/24 08:43:32 by texenber         ###   ########.fr       */
+/*   Updated: 2025/11/11 11:05:07 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

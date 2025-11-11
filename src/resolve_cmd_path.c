@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 15:49:54 by texenber          #+#    #+#             */
-/*   Updated: 2025/11/07 16:36:02 by texenber         ###   ########.fr       */
+/*   Updated: 2025/11/11 13:10:32 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	*resolve_cmd(char *cmd, char **dir_path)
 	return (ft_strdup(cmd));
 }
 
-void	find_cmd_path(t_pipex *data, char **envp)
+void	find_cmd_path_in_child(t_pipex *data, char **envp, char **cmd_av)
 {
 	char	*env_path;
 	char	**dir_path;
@@ -57,13 +57,12 @@ void	find_cmd_path(t_pipex *data, char **envp)
 		i++;
 	}
 	if (!env_path)
-		exit_all_error(data, "No such file or directory", 127);
+		exit_perror(data, cmd_av[0]);
 	dir_path = ft_split(env_path, ':');
 	if (!dir_path)
-		exit_all_error(data, "failed to allocate dir_path", 1);
-	data->cmd1_path = resolve_cmd(data->cmd1_av[0], dir_path);
-	data->cmd2_path = resolve_cmd(data->cmd2_av[0], dir_path);
-	if (!data->cmd1_path || !data->cmd2_path)
-		exit_all_error(data, "failed to allocate cmd_path", 1);
+		exit_all_error(data, "failed to allocate dir_path\n", 1);
+	data->cmd_path = resolve_cmd(cmd_av[0], dir_path);
 	free_argv(dir_path);
+	if (!data->cmd_path)
+		exit_all_error(data, "failed to allocate cmd_path\n", 1);
 }
